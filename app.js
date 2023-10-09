@@ -16,7 +16,7 @@ app.set('view engine', 'ejs');
 // Set up mongoose connection
 const mongoose = require("mongoose");
 mongoose.set("strictQuery", false);
-const mongoDB = "insert_your_database_url_here";
+const mongoDB = "mongodb+srv://Random:6996@yep.8wuejvb.mongodb.net/local_library?retryWrites=true&w=majority";
 // const dev_db_url =
 // "mongodb+srv://cooluser:coolpassword@cluster0.lz91hw2.mongodb.net/local_library?retryWrites=true&w=majority";
 // const mongoDB = process.env.MONGODB_URI || dev_db_url;
