@@ -1,7 +1,5 @@
-import { Schema as _Schema, model } from "mongoose";
-import { DateTime } from "luxon"; //for date handling
-
-const Schema = _Schema;
+const { Schema, model } = require("mongoose");
+const { DateTime } = require("luxon"); // for date handling
 
 const BookInstanceSchema = new Schema({
   book: { type: Schema.ObjectId, ref: "Book", required: true }, // Reference to the associated book.
@@ -25,8 +23,8 @@ BookInstanceSchema.virtual("due_back_formatted").get(function () {
 });
 
 BookInstanceSchema.virtual("due_back_yyyy_mm_dd").get(function () {
-  return DateTime.fromJSDate(this.due_back).toISODate(); //format 'YYYY-MM-DD'
+  return DateTime.fromJSDate(this.due_back).toISODate(); // format 'YYYY-MM-DD'
 });
 
 // Export model.
-export default model("BookInstance", BookInstanceSchema);
+module.exports = model("BookInstance", BookInstanceSchema);

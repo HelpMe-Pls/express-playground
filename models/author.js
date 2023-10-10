@@ -1,7 +1,5 @@
-import { Schema as _Schema, model } from "mongoose";
-import { DateTime } from "luxon"; // for date handling
-
-const Schema = _Schema;
+const { Schema, model } = require("mongoose");
+const { DateTime } = require("luxon"); // for date handling
 
 const AuthorSchema = new Schema({
   first_name: { type: String, required: true, maxLength: 100 },
@@ -45,4 +43,4 @@ AuthorSchema.virtual("date_of_death_yyyy_mm_dd").get(function () {
 });
 
 // Export model.
-export default model("Author", AuthorSchema);
+module.exports = model("Author", AuthorSchema);

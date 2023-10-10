@@ -1,6 +1,4 @@
-import { Schema as _Schema, model } from "mongoose";
-
-const Schema = _Schema;
+const { Schema, model } = require("mongoose");
 
 const GenreSchema = new Schema({
   name: { type: String, required: true, minLength: 3, maxLength: 100 },
@@ -12,4 +10,4 @@ GenreSchema.virtual("url").get(function () {
 });
 
 // Export model.
-export default model("Genre", GenreSchema);
+module.exports = model("Genre", GenreSchema);
