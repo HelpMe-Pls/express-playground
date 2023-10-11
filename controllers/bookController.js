@@ -31,7 +31,7 @@ exports.index = asyncHandler(async (req, res, next) => {
     if(err) {
       console.log(err);
     } else {
-      res.render('layout', { title: 'Home', content: str });
+      res.render('layout', { title: 'Local Library Home', content: str });
     }
   });
   // res.render("index", {
@@ -46,12 +46,46 @@ exports.index = asyncHandler(async (req, res, next) => {
 
 // Display list of all books.
 exports.book_list = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: Book list");
+  const allBooks = await Book.find({}, "title author")
+    .sort({ title: 1 })
+    .populate("author")
+    .exec();
+  // const allBooks = {}
+
+  ejs.renderFile('views/book-list.ejs', { title: 'Book List',  book_list: allBooks }, function(err, str){
+    if(err) {
+      console.log(err);
+    } else {
+      res.render("layout", { title: "Book List", content: str });
+    }
+  });
 });
 
 // Display detail page for a specific book.
 exports.book_detail = asyncHandler(async (req, res, next) => {
-  res.send(`NOT IMPLEMENTED: Book detail: ${req.params.id}`);
+  // Get details of books, book instances for specific book
+  const [book, bookInstances] = await Promise.all([
+    Book.findById(req.params.id).populate("author").populate("genre").exec(),
+    BookInstance.find({ book: req.params.id }).exec(),
+  ]);
+
+  if (book === null) {
+    // No results.
+    const err = new Error("Book not found");
+    err.status = 404;
+    return next(err);
+  }
+  ejs.renderFile('views/book-detail.ejs', {
+    title: book.title,
+    book: book,
+    book_instances: bookInstances,
+  }, function (err, str) {
+    if(err) {
+      console.log(err);
+    } else {
+      res.render("layout", { title: "Book Detail", content: str });
+    }
+  });
 });
 
 // Display book create form on GET.
