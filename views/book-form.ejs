@@ -1,0 +1,47 @@
+<h1><%=title%></h1>
+<form class="" action="" method="post">
+  <div class="form-group">
+    <label for="title">Title:</label>
+    <input class="form-control" type="text" value="<%= typeof book==='undefined' ? '' : book.title %>" placeholder="Name Of Book" name="title">
+  </div>
+  <div class="form-group">
+    <label for="author">Author:</label>
+    <select class="form-control" type="select" placeholder="Select Author" name="author">
+      <%authors.forEach(function(author){%>
+      //- Handle GET form, where book.author is an object, and POST form, where it is a string.
+      <%if(typeof book !== 'undefined'){%>
+      <option value="<%=author._id%>" selected="<%=author._id.toString()==book.author._id.toString()==book.author  ? 'selected' : false%>"><%=author.name%></option>
+      <%}else{%>
+      <option value="<%=author._id%>"><%=author.name%></option>
+      <%}%>
+  <%})%>
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="summary">Summary:</label>
+    <input class="form-control" type="textarea" name="summary" value="<%= typeof book==='undefined' ? '' : book.summary%>" placeholder="summary">
+  </div>
+  <div class="form-group">
+    <label for="isbn">ISBN:</label>
+    <input type="text" class="form-control" name="isbn" value="<%typeof book==='undefined' ? '' : book.isbn%>" placeholder="ISBN13">
+  </div>
+  <div class="form-group">
+    <label for="genre">Genre:</label>
+    <div>
+      <%genres.forEach(function(genre){%>
+      <div style='display: inline; padding-right:10px;'>
+        <input class='checkbox-input' type="checkbox" name="genre" id="<%=genre._id%>" value="<%=genre._id%>" >
+        <label for="genre._id"><%=genre.name%></label>
+      </div>
+      <%})%>
+    </div>
+  </div>
+  <button class=" btn btn-primary" type="submit">Submit</button>
+</form>
+<%if(errors){%>
+<ul>
+  <% errors.forEach(function(error){ %>
+  <li><%=error.msg%></li>
+  <%	})%>
+</ul>
+<%}%>

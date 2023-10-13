@@ -1,0 +1,40 @@
+
+  <h1><%= title %></h1>
+
+  <form method="POST" action="">
+    <div class="form-group">
+      <label for="book">Book:</label>
+      <select id="book" class="form-control" name="book" required>
+        <% book_list.sort(function(a, b) { let textA = a.title.toUpperCase(); let textB = b.title.toUpperCase(); return (textA < textB) ? -1 : (textA > textB) ? 1 : 0; }); %>
+        <% book_list.forEach(function(book) { %>
+          <option value="<%= book._id %>" selected="<%= selected_book == book._id.toString() ? 'selected' : false %>"><%= book.title %></option>
+        <% }); %>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="imprint">Imprint:</label>
+      <input id="imprint" class="form-control" type="text" placeholder="Publisher and date information" name="imprint" required value="<%= typeof bookinstance !== 'undefined' ? bookinstance.imprint : '' %>">
+    </div>
+    <div class="form-group">
+      <label for="due_back">Date when book available:</label>
+      <input id="due_back" class="form-control" type="date" name="due_back" value="<%= typeof bookinstance !== 'undefined' ? bookinstance.due_back_yyyy_mm_dd : '' %>">
+    </div>
+    <div class="form-group">
+      <label for="status">Status:</label>
+      <select id="status" class="form-control" name="status" required>
+        <option value="Maintenance" selected="<%= typeof bookinstance === 'undefined' || bookinstance.status !== 'Maintenance' ? false : 'selected' %>">Maintenance</option>
+        <option value="Available" selected="<%= typeof bookinstance === 'undefined' || bookinstance.status !== 'Available' ? false : 'selected' %>">Available</option>
+        <option value="Loaned" selected="<%= typeof bookinstance === 'undefined' || bookinstance.status !== 'Loaned' ? false : 'selected' %>">Loaned</option>
+        <option value="Reserved" selected="<%= typeof bookinstance === 'undefined' || bookinstance.status !== 'Reserved' ? false : 'selected' %>">Reserved</option>
+      </select>
+    </div>
+    <button class="btn btn-primary" type="submit">Submit</button>
+  </form>
+
+  <% if (errors) { %>
+    <ul>
+      <% errors.forEach(function(error) { %>
+        <li><%= error.msg %></li>
+      <% }); %>
+    </ul>
+  <% } %>

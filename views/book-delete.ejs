@@ -1,0 +1,49 @@
+<h1><%= title %>: <%= book.title %></h1>
+
+<p><strong>Author:</strong> <a href="<%= book.author.url %>"><%= book.author.name %></a></p>
+<p><strong>Summary:</strong> <%= book.summary %></p>
+<p><strong>ISBN:</strong> <%= book.isbn %></p>
+<p><strong>Genre:</strong>
+  <% book.genre.forEach(function(val, index) { %>
+  <a href="<%= val.url %>"><%= val.name %></a><%= (index === book.genre.length - 1) ? '' : ',' %>
+  <% }); %>
+</p>
+
+<hr>
+
+<% if (book_instances.length) { %>
+<p><strong>Delete the following copies before attempting to delete this Book.</strong></p>
+
+<div style="margin-left: 20px; margin-top: 20px;">
+  <h4>Copies</h4>
+
+  <% book_instances.forEach(function(book_copy) { %>
+  <hr>
+
+  <% if (book_copy.status === 'Available') { %>
+  <p class="text-success"><%= book_copy.status %></p>
+  <% } else if (book_copy.status === 'Maintenance') { %>
+  <p class="text-danger"><%= book_copy.status %></p>
+  <% } else { %>
+  <p class="text-warning"><%= book_copy.status %></p>
+  <% } %>
+
+  <p><strong>Imprint:</strong> <%= book_copy.imprint %></p>
+
+  <% if (book_copy.status !== 'Available') { %>
+  <p><strong>Due back:</strong> <%= book_copy.due_back %></p>
+  <% } %>
+
+  <p><strong>Id:</strong> <a href="<%= book_copy.url %>"><%= book_copy._id %></a></p>
+  <% }); %>
+</div>
+<% } else { %>
+<p>Do you really want to delete this Book?</p>
+
+<form method="POST" action="">
+  <div class="form-group">
+    <input id="id" class="form-control" type="hidden" name="id" required value="<%= book._id %>">
+  </div>
+  <button class="btn btn-primary" type="submit">Delete</button>
+</form>
+<% } %>
