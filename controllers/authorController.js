@@ -6,7 +6,7 @@ const { body, validationResult } = require("express-validator");
 const asyncHandler = require("express-async-handler");
 
 // Display list of all Authors.
-exports.author_list = asyncHandler(async (req, res, next) => {
+exports.author_list = asyncHandler(async (_req, res, _next) => {
   const allAuthors = await Author.find().sort({ family_name: 1 }).exec();
   ejs.renderFile('views/author-list.ejs', { title: 'Book Instance List', author_list: allAuthors, }, function (err, str) {
     if (err) {
@@ -45,7 +45,7 @@ exports.author_detail = asyncHandler(async (req, res, next) => {
 });
 
 // Display Author create form on GET.
-exports.author_create_get = (req, res, next) => {
+exports.author_create_get = (_req, res, _next) => {
   ejs.renderFile('views/author-form.ejs', {
     title: "Create Author",
     errors: null
@@ -85,7 +85,7 @@ exports.author_create_post = [
     .toDate(),
 
   // Process request after validation and sanitization.
-  asyncHandler(async (req, res, next) => {
+  asyncHandler(async (req, res, _next) => {
     // Extract the validation errors from a request.
     const errors = validationResult(req);
 
@@ -121,7 +121,7 @@ exports.author_create_post = [
 ]
 
 // Display Author delete form on GET.
-exports.author_delete_get = asyncHandler(async (req, res, next) => {
+exports.author_delete_get = asyncHandler(async (req, res, _next) => {
   // Get details of author and all their books (in parallel)
   const [author, allBooksByAuthor] = await Promise.all([
     Author.findById(req.params.id).exec(),
@@ -146,7 +146,7 @@ exports.author_delete_get = asyncHandler(async (req, res, next) => {
 });
 
 // Handle Author delete on POST.
-exports.author_delete_post = asyncHandler(async (req, res, next) => {
+exports.author_delete_post = asyncHandler(async (req, res, _next) => {
   // Get details of author and all their books (in parallel)
   const [author, allBooksByAuthor] = await Promise.all([
     Author.findById(req.params.id).exec(),
@@ -221,7 +221,7 @@ exports.author_update_post = [
     .toDate(),
 
   // Process request after validation and sanitization.
-  asyncHandler(async (req, res, next) => {
+  asyncHandler(async (req, res, _next) => {
     // Extract the validation errors from a request.
     const errors = validationResult(req);
 

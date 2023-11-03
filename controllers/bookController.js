@@ -7,7 +7,7 @@ const BookInstance = require("../models/bookinstance");
 const { body, validationResult } = require("express-validator");
 const asyncHandler = require("express-async-handler");
 
-exports.index = asyncHandler(async (req, res, next) => {
+exports.index = asyncHandler(async (_req, res, _next) => {
   // Get details of books, book instances, authors and genre counts (in parallel)
   const [
     numBooks,
@@ -47,7 +47,7 @@ exports.index = asyncHandler(async (req, res, next) => {
 });
 
 // Display list of all books.
-exports.book_list = asyncHandler(async (req, res, next) => {
+exports.book_list = asyncHandler(async (_req, res, _next) => {
   const allBooks = await Book.find({}, "title author")
     .sort({ title: 1 })
     .populate("author")
@@ -290,7 +290,7 @@ exports.book_update_get = asyncHandler(async (req, res, next) => {
 // Handle book update on POST.
 exports.book_update_post = [
   // Convert the genre to an array.
-  (req, res, next) => {
+  (req, _res, next) => {
     if (!(req.body.genre instanceof Array)) {
       if (typeof req.body.genre === "undefined") {
         req.body.genre = [];
@@ -318,7 +318,7 @@ exports.book_update_post = [
   body("genre.*").escape(),
 
   // Process request after validation and sanitization.
-  asyncHandler(async (req, res, next) => {
+  asyncHandler(async (req, res, _next) => {
     // Extract the validation errors from a request.
     const errors = validationResult(req);
 
