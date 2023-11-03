@@ -114,7 +114,7 @@ exports.book_create_get = asyncHandler(async (req, res, next) => {
 // Handle book create on POST.
 exports.book_create_post = [
   // Convert the genre to an array.
-  (req, res, next) => {
+  (req, _res, next) => {
     if (!(req.body.genre instanceof Array)) {
       if (typeof req.body.genre === "undefined") req.body.genre = [];
       else req.body.genre = new Array(req.body.genre);
@@ -189,7 +189,7 @@ exports.book_create_post = [
 ];
 
 // Display book delete form on GET.
-exports.book_delete_get = asyncHandler(async (req, res, next) => {
+exports.book_delete_get = asyncHandler(async (req, res, _next) => {
   const [book, bookInstances] = await Promise.all([
     Book.findById(req.params.id).populate("author").populate("genre").exec(),
     BookInstance.find({ book: req.params.id }).exec(),
@@ -214,7 +214,7 @@ exports.book_delete_get = asyncHandler(async (req, res, next) => {
 })
 
 // Handle book delete on POST.
-exports.book_delete_post = asyncHandler(async (req, res, next) => {
+exports.book_delete_post = asyncHandler(async (req, res, _next) => {
   // Assume the post has valid id (ie no validation/sanitization).
 
   const [book, bookInstances] = await Promise.all([
